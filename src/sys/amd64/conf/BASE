@@ -1,0 +1,358 @@
+#
+# GENERIC -- Generic kernel configuration file for FreeBSD/amd64
+#
+# For more information on this file, please read the config(5) manual page,
+# and/or the handbook section on Kernel Configuration Files:
+#
+#    http://www.FreeBSD.org/doc/en_US.ISO8859-1/books/handbook/kernelconfig-config.html
+#
+# The handbook is also available locally in /usr/share/doc/handbook
+# if you've installed the doc distribution, otherwise always see the
+# FreeBSD World Wide Web server (http://www.FreeBSD.org/) for the
+# latest information.
+#
+# An exhaustive list of options and more detailed explanations of the
+# device lines is also present in the ../../conf/NOTES and NOTES files.
+# If you are in doubt as to the purpose or necessity of a line, check first
+# in NOTES.
+#
+# $FreeBSD: src/sys/amd64/conf/GENERIC,v 1.568.2.7 2011/11/07 13:40:54 marius Exp $
+
+include 	GENERIC
+#cpu		HAMMER # Included in Generic
+ident		BASE
+
+options 	KDB_UNATTENDED
+
+
+# To statically compile in device wiring instead of /boot/device.hints
+#hints		"GENERIC.hints"		# Default places to look for devices.
+
+# Use the following to compile in values accessible to the kernel
+# through getenv() (or kenv(1) in userland). The format of the file
+# is 'variable=value', see kenv(1)
+#
+# env		"GENERIC.env"
+
+nomakeoptions	DEBUG   		# Build kernel with gdb(1) debug symbols
+
+#options 	SCHED_ULE		# ULE scheduler
+#options 	PREEMPTION		# Enable kernel thread preemption
+#options 	INET			# InterNETworking
+#options 	INET6			# IPv6 communications protocols
+#options 	SCTP			# Stream Control Transmission Protocol
+#options 	FFS			# Berkeley Fast Filesystem
+#options 	SOFTUPDATES		# Enable FFS soft updates support
+nooptions 	UFS_ACL			# Support for access control lists
+#options 	UFS_DIRHASH		# Improve performance on big directories
+nooptions 	UFS_GJOURNAL		# Enable gjournal-based UFS journaling
+nooptions 	MD_ROOT			# MD is a potential root device
+nooptions 	NFSCL			# New Network Filesystem Client
+nooptions 	NFSD			# New Network Filesystem Server
+nooptions 	NFSLOCKD		# Network Lock Manager
+nooptions 	NFS_ROOT		# NFS usable as /, requires NFSCL
+#options 	MSDOSFS			# MSDOS Filesystem
+#options 	CD9660			# ISO 9660 Filesystem
+#options 	PROCFS			# Process filesystem (requires PSEUDOFS)
+#options 	PSEUDOFS		# Pseudo-filesystem framework
+#options 	GEOM_PART_GPT		# GUID Partition Tables.
+#options 	GEOM_LABEL		# Provides labelization
+#options 	COMPAT_FREEBSD32	# Compatible with i386 binaries
+nooptions 	COMPAT_FREEBSD4		# Compatible with FreeBSD4
+nooptions 	COMPAT_FREEBSD5		# Compatible with FreeBSD5
+nooptions 	COMPAT_FREEBSD6		# Compatible with FreeBSD6
+nooptions 	COMPAT_FREEBSD7		# Compatible with FreeBSD7
+nooptions 	SCSI_DELAY     		# Delay (in ms) before probing SCSI
+#options 	KTRACE			# ktrace(1) support
+#options 	STACK			# stack(9) support
+#options 	SYSVSHM			# SYSV-style shared memory
+#options 	SYSVMSG			# SYSV-style message queues
+#options 	SYSVSEM			# SYSV-style semaphores
+#options 	_KPOSIX_PRIORITY_SCHEDULING # POSIX P1003_1B real-time extensions
+#options 	PRINTF_BUFR_SIZE=128	# Prevent printf output being interspersed.
+#options 	KBD_INSTALL_CDEV	# install a CDEV entry in /dev
+#options 	HWPMC_HOOKS		# Necessary kernel hooks for hwpmc(4)
+nooptions 	AUDIT			# Security event auditing
+nooptions 	MAC			# TrustedBSD MAC Framework
+#options 	KDTRACE_FRAME		# Ensure frames are compiled in
+#options 	KDTRACE_HOOKS		# Kernel DTrace hooks
+#options 	INCLUDE_CONFIG_FILE     # Include this file in kernel
+
+#options 	KDB			# Kernel debugger related code
+#options 	KDB_TRACE		# Print a stack trace for a panic
+
+# Make an SMP-capable kernel by default
+#options 	SMP			# Symmetric MultiProcessor Kernel
+
+# CPU frequency control
+#device		cpufreq
+
+# Bus support.
+#device		acpi
+#device		pci
+
+# Floppy drives
+nodevice		fdc
+
+# ATA controllers
+#device		ahci		# AHCI-compatible SATA controllers
+#device		ata		# Legacy ATA/SATA controllers
+nooptions 	ATA_CAM		# Handle legacy controllers with CAM
+#options 	ATA_STATIC_ID	# Static device numbering
+nodevice		mvs		# Marvell 88SX50XX/88SX60XX/88SX70XX/SoC SATA
+nodevice		siis		# SiliconImage SiI3124/SiI3132/SiI3531 SATA
+
+# SCSI Controllers
+nodevice		ahc		# AHA2940 and onboard AIC7xxx devices
+nooptions 	AHC_REG_PRETTY_PRINT	# Print register bitfields in debug
+					# output.  Adds ~128k to driver.
+nodevice		ahd		# AHA39320/29320 and onboard AIC79xx devices
+nooptions 	AHD_REG_PRETTY_PRINT	# Print register bitfields in debug
+					# output.  Adds ~215k to driver.
+nodevice		esp		# AMD Am53C974 (Tekram DC-390(T))
+nodevice		hptiop		# Highpoint RocketRaid 3xxx series
+nodevice		isp		# Qlogic family
+nodevice		ispfw		# Firmware for QLogic HBAs- normally a module
+nodevice		mpt		# LSI-Logic MPT-Fusion
+nodevice		mps		# LSI-Logic MPT-Fusion 2
+#device		ncr		# NCR/Symbios Logic
+nodevice		sym		# NCR/Symbios Logic (newer chipsets + those of `ncr')
+nodevice		trm		# Tekram DC395U/UW/F DC315U adapters
+
+nodevice		adv		# Advansys SCSI adapters
+nodevice		adw		# Advansys wide SCSI adapters
+nodevice		aic		# Adaptec 15[012]x SCSI adapters, AIC-6[23]60.
+nodevice		bt		# Buslogic/Mylex MultiMaster SCSI adapters
+nodevice		isci		# Intel C600 SAS controller
+
+# ATA/SCSI peripherals
+#device		scbus		# SCSI bus (required for ATA/SCSI)
+nodevice		ch		# SCSI media changers
+#device		da		# Direct Access (disks)
+nodevice		sa		# Sequential Access (tape etc)
+nodevice		cd		# CD
+#device		pass		# Passthrough device (direct ATA/SCSI access)
+nodevice		ses		# SCSI Environmental Services (and SAF-TE)
+nodevice		ctl		# CAM Target Layer
+
+# RAID controllers interfaced to the SCSI subsystem
+nodevice		amr		# AMI MegaRAID
+nodevice		arcmsr		# Areca SATA II RAID
+#XXX it is not 64-bit clean, -scottl
+#device		asr		# DPT SmartRAID V, VI and Adaptec SCSI RAID
+nodevice		ciss		# Compaq Smart RAID 5*
+nodevice		dpt		# DPT Smartcache III, IV - See NOTES for options
+nodevice		hptmv		# Highpoint RocketRAID 182x
+nodevice		hptrr		# Highpoint RocketRAID 17xx, 22xx, 23xx, 25xx
+nodevice		iir		# Intel Integrated RAID
+nodevice		ips		# IBM (Adaptec) ServeRAID
+nodevice		mly		# Mylex AcceleRAID/eXtremeRAID
+nodevice		twa		# 3ware 9000 series PATA/SATA RAID
+
+# RAID controllers
+nodevice		aac		# Adaptec FSA RAID
+nodevice		aacp		# SCSI passthrough for aac (requires CAM)
+nodevice		ida		# Compaq Smart RAID
+nodevice		mfi		# LSI MegaRAID SAS
+nodevice		mlx		# Mylex DAC960 family
+#XXX pointer/int warnings
+#device		pst		# Promise Supertrak SX6000
+nodevice		twe		# 3ware ATA RAID
+nodevice		tws		# LSI 3ware 9750 SATA+SAS 6Gb/s RAID controller
+
+# atkbdc0 controls both the keyboard and the PS/2 mouse
+#device		atkbdc		# AT keyboard controller
+#device		atkbd		# AT keyboard
+nodevice		psm		# PS/2 mouse
+
+#device		kbdmux		# keyboard multiplexer
+
+#device		vga		# VGA video card driver
+nooptions 	VESA		# Add support for VESA BIOS Extensions (VBE)
+
+#device		splash		# Splash screen and screen saver support
+
+# syscons is the default console driver, resembling an SCO console
+#device		sc
+nooptions 	SC_PIXEL_MODE	# add support for the raster text mode
+
+nodevice		agp		# support several AGP chipsets
+
+# PCCARD (PCMCIA) support
+# PCMCIA and cardbus bridge support
+nodevice		cbb		# cardbus (yenta) bridge
+nodevice		pccard		# PC Card (16-bit) bus
+nodevice		cardbus		# CardBus (32-bit) bus
+
+# Serial (COM) ports
+nodevice		uart		# Generic UART driver
+
+# Parallel port
+nodevice		ppc
+nodevice		ppbus		# Parallel port bus (required)
+nodevice		lpt		# Printer
+nodevice		plip		# TCP/IP over parallel
+nodevice		ppi		# Parallel port interface device
+#device		vpo		# Requires scbus and da
+
+nodevice		puc		# Multi I/O cards and multi-channel UARTs
+
+# PCI Ethernet NICs.
+nodevice		bxe		# Broadcom BCM57710/BCM57711/BCM57711E 10Gb Ethernet
+nodevice		de		# DEC/Intel DC21x4x (``Tulip'')
+nodevice		em		# Intel PRO/1000 Gigabit Ethernet Family
+nodevice		igb		# Intel PRO/1000 PCIE Server Gigabit Family
+nodevice		ixgbe		# Intel PRO/10GbE PCIE Ethernet Family
+nodevice		le		# AMD Am7900 LANCE and Am79C9xx PCnet
+nodevice		ti		# Alteon Networks Tigon I/II gigabit Ethernet
+nodevice		txp		# 3Com 3cR990 (``Typhoon'')
+nodevice		vx		# 3Com 3c590, 3c595 (``Vortex'')
+
+# PCI Ethernet NICs that use the common MII bus controller code.
+# NOTE: Be sure to keep the 'device miibus' line in order to use these NICs!
+nodevice		miibus		# MII bus support
+nodevice		ae		# Attansic/Atheros L2 FastEthernet
+nodevice		age		# Attansic/Atheros L1 Gigabit Ethernet
+nodevice		alc		# Atheros AR8131/AR8132 Ethernet
+nodevice		ale		# Atheros AR8121/AR8113/AR8114 Ethernet
+nodevice		bce		# Broadcom BCM5706/BCM5708 Gigabit Ethernet
+nodevice		bfe		# Broadcom BCM440x 10/100 Ethernet
+nodevice		bge		# Broadcom BCM570xx Gigabit Ethernet
+nodevice		cas		# Sun Cassini/Cassini+ and NS DP83065 Saturn
+nodevice		dc		# DEC/Intel 21143 and various workalikes
+nodevice		et		# Agere ET1310 10/100/Gigabit Ethernet
+nodevice		fxp		# Intel EtherExpress PRO/100B (82557, 82558)
+nodevice		gem		# Sun GEM/Sun ERI/Apple GMAC
+nodevice		hme		# Sun HME (Happy Meal Ethernet)
+nodevice		jme		# JMicron JMC250 Gigabit/JMC260 Fast Ethernet
+nodevice		lge		# Level 1 LXT1001 gigabit Ethernet
+nodevice		msk		# Marvell/SysKonnect Yukon II Gigabit Ethernet
+nodevice		nfe		# nVidia nForce MCP on-board Ethernet
+nodevice		nge		# NatSemi DP83820 gigabit Ethernet
+#device		nve		# nVidia nForce MCP on-board Ethernet Networking
+nodevice		pcn		# AMD Am79C97x PCI 10/100 (precedence over 'le')
+nodevice		re		# RealTek 8139C+/8169/8169S/8110S
+nodevice		rl		# RealTek 8129/8139
+nodevice		sf		# Adaptec AIC-6915 (``Starfire'')
+nodevice		sge		# Silicon Integrated Systems SiS190/191
+nodevice		sis		# Silicon Integrated Systems SiS 900/SiS 7016
+nodevice		sk		# SysKonnect SK-984x & SK-982x gigabit Ethernet
+nodevice		ste		# Sundance ST201 (D-Link DFE-550TX)
+nodevice		stge		# Sundance/Tamarack TC9021 gigabit Ethernet
+nodevice		tl		# Texas Instruments ThunderLAN
+nodevice		tx		# SMC EtherPower II (83c170 ``EPIC'')
+nodevice		vge		# VIA VT612x gigabit Ethernet
+nodevice		vr		# VIA Rhine, Rhine II
+nodevice		wb		# Winbond W89C840F
+nodevice		xl		# 3Com 3c90x (``Boomerang'', ``Cyclone'')
+
+# ISA Ethernet NICs.  pccard NICs included.
+nodevice		cs		# Crystal Semiconductor CS89x0 NIC
+# 'device ed' requires 'device miibus'
+nodevice		ed		# NE[12]000, SMC Ultra, 3c503, DS8390 cards
+nodevice		ex		# Intel EtherExpress Pro/10 and Pro/10+
+nodevice		ep		# Etherlink III based cards
+nodevice		fe		# Fujitsu MB8696x based cards
+nodevice		sn		# SMC's 9000 series of Ethernet chips
+nodevice		xe		# Xircom pccard Ethernet
+
+# Wireless NIC cards
+nodevice		wlan		# 802.11 support
+nooptions 	IEEE80211_DEBUG	# enable debug msgs
+nooptions 	IEEE80211_AMPDU_AGE # age frames in AMPDU reorder q's
+nooptions 	IEEE80211_SUPPORT_MESH	# enable 802.11s draft support
+nodevice		wlan_wep	# 802.11 WEP support
+nodevice		wlan_ccmp	# 802.11 CCMP support
+nodevice		wlan_tkip	# 802.11 TKIP support
+nodevice		wlan_amrr	# AMRR transmit rate control algorithm
+nodevice		an		# Aironet 4500/4800 802.11 wireless NICs.
+nodevice		ath		# Atheros NIC's
+nodevice		ath_pci		# Atheros pci/cardbus glue
+nodevice		ath_hal		# pci/cardbus chip support
+nooptions 	AH_SUPPORT_AR5416	# enable AR5416 tx/rx descriptors
+nodevice		ath_rate_sample	# SampleRate tx rate control for ath
+nodevice		bwi		# Broadcom BCM430x/BCM431x wireless NICs.
+nodevice		bwn		# Broadcom BCM43xx wireless NICs.
+nodevice		ipw		# Intel 2100 wireless NICs.
+nodevice		iwi		# Intel 2200BG/2225BG/2915ABG wireless NICs.
+nodevice		iwn		# Intel 4965/1000/5000/6000 wireless NICs.
+nodevice		malo		# Marvell Libertas wireless NICs.
+nodevice		mwl		# Marvell 88W8363 802.11n wireless NICs.
+nodevice		ral		# Ralink Technology RT2500 wireless NICs.
+nodevice		wi		# WaveLAN/Intersil/Symbol 802.11 wireless NICs.
+nodevice		wpi		# Intel 3945ABG wireless NICs.
+
+# Pseudo devices.
+#device		loop		# Network loopback
+#device		random		# Entropy device
+#device		ether		# Ethernet support
+nodevice		vlan		# 802.1Q VLAN support
+nodevice		tun		# Packet tunnel.
+#device		pty		# BSD-style compatibility pseudo ttys
+nodevice		md		# Memory "disks"
+nodevice		gif		# IPv6 and IPv4 tunneling
+nodevice		faith		# IPv6-to-IPv4 relaying (translation)
+#device		firmware	# firmware assist module
+
+# The `bpf' device enables the Berkeley Packet Filter.
+# Be aware of the administrative consequences of enabling this!
+# Note that 'bpf' is required for DHCP.
+#device		bpf		# Berkeley packet filter
+
+# USB support
+nooptions 	USB_DEBUG	# enable debug msgs
+#device		uhci		# UHCI PCI->USB interface
+nodevice		ohci		# OHCI PCI->USB interface
+#device		ehci		# EHCI PCI->USB interface (USB 2.0)
+nodevice		xhci		# XHCI PCI->USB interface (USB 3.0)
+#device		usb		# USB Bus (required)
+#device		udbp		# USB Double Bulk Pipe devices (needs netgraph)
+#device		uhid		# "Human Interface Devices"
+#device		ukbd		# Keyboard
+nodevice		ulpt		# Printer
+#device		umass		# Disks/Mass storage - Requires scbus and da
+nodevice		ums		# Mouse
+nodevice		urio		# Diamond Rio 500 MP3 player
+# USB Serial devices
+nodevice		u3g		# USB-based 3G modems (Option, Huawei, Sierra)
+nodevice		uark		# Technologies ARK3116 based serial adapters
+nodevice		ubsa		# Belkin F5U103 and compatible serial adapters
+nodevice		uftdi		# For FTDI usb serial adapters
+nodevice		uipaq		# Some WinCE based devices
+nodevice		uplcom		# Prolific PL-2303 serial adapters
+nodevice		uslcom		# SI Labs CP2101/CP2102 serial adapters
+nodevice		uvisor		# Visor and Palm devices
+nodevice		uvscom		# USB serial support for DDI pocket's PHS
+# USB Ethernet, requires miibus
+nodevice		aue		# ADMtek USB Ethernet
+nodevice		axe		# ASIX Electronics USB Ethernet
+nodevice		cdce		# Generic USB over Ethernet
+nodevice		cue		# CATC USB Ethernet
+nodevice		kue		# Kawasaki LSI USB Ethernet
+nodevice		rue		# RealTek RTL8150 USB Ethernet
+nodevice		udav		# Davicom DM9601E USB
+# USB Wireless
+nodevice		rum		# Ralink Technology RT2501USB wireless NICs
+nodevice		run		# Ralink Technology RT2700/RT2800/RT3000 NICs.
+nodevice		uath		# Atheros AR5523 wireless NICs
+nodevice		upgt		# Conexant/Intersil PrismGT wireless NICs.
+nodevice		ural		# Ralink Technology RT2500USB wireless NICs
+nodevice		urtw		# Realtek RTL8187B/L wireless NICs
+nodevice		zyd		# ZyDAS zd1211/zd1211b wireless NICs
+
+# FireWire support
+nodevice		firewire	# FireWire bus code
+# sbp(4) works for some systems but causes boot failure on others
+#device		sbp		# SCSI over FireWire (Requires scbus and da)
+nodevice		fwe		# Ethernet over FireWire (non-standard!)
+nodevice		fwip		# IP over FireWire (RFC 2734,3146)
+nodevice		dcons		# Dumb console driver
+nodevice		dcons_crom	# Configuration ROM for dcons
+
+# Sound support
+nodevice		sound		# Generic sound driver (required)
+nodevice		snd_es137x	# Ensoniq AudioPCI ES137x
+nodevice		snd_hda		# Intel High Definition Audio
+nodevice		snd_ich		# Intel, NVidia and other ICH AC'97 Audio
+nodevice		snd_uaudio	# USB Audio
+nodevice		snd_via8233	# VIA VT8233x Audio

@@ -1,0 +1,6 @@
+
+include 	BASE
+ident		VMWARE
+
+device		mpt		# LSI-Logic MPT-Fusion
+device		em		# Intel PRO/1000 Gigabit Ethernet Family
