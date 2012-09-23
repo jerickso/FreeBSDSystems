@@ -16,7 +16,7 @@
 # If you are in doubt as to the purpose or necessity of a line, check first
 # in NOTES.
 #
-# $FreeBSD: src/sys/amd64/conf/GENERIC,v 1.568.2.14 2012/07/04 00:54:16 delphij Exp $
+# $FreeBSD: src/sys/amd64/conf/GENERIC,v 1.568.2.15 2012/08/29 15:38:18 gjb Exp $
 
 include 	GENERIC
 #cpu		HAMMER # Included in Generic
@@ -56,6 +56,7 @@ nooptions 	NFS_ROOT		# NFS usable as /, requires NFSCL
 #options 	PROCFS			# Process filesystem (requires PSEUDOFS)
 #options 	PSEUDOFS		# Pseudo-filesystem framework
 #options 	GEOM_PART_GPT		# GUID Partition Tables.
+#options 	GEOM_RAID		# Soft RAID functionality.
 #options 	GEOM_LABEL		# Provides labelization
 #options 	COMPAT_FREEBSD32	# Compatible with i386 binaries
 nooptions 	COMPAT_FREEBSD4		# Compatible with FreeBSD4
@@ -148,6 +149,7 @@ nodevice		iir		# Intel Integrated RAID
 nodevice		ips		# IBM (Adaptec) ServeRAID
 nodevice		mly		# Mylex AcceleRAID/eXtremeRAID
 nodevice		twa		# 3ware 9000 series PATA/SATA RAID
+nodevice		tws		# LSI 3ware 9750 SATA+SAS 6Gb/s RAID controller
 
 # RAID controllers
 nodevice		aac		# Adaptec FSA RAID
@@ -158,7 +160,6 @@ nodevice		mlx		# Mylex DAC960 family
 #XXX pointer/int warnings
 #device		pst		# Promise Supertrak SX6000
 nodevice		twe		# 3ware ATA RAID
-nodevice		tws		# LSI 3ware 9750 SATA+SAS 6Gb/s RAID controller
 
 # atkbdc0 controls both the keyboard and the PS/2 mouse
 #device		atkbdc		# AT keyboard controller
@@ -266,7 +267,7 @@ nodevice		wlan_ccmp	# 802.11 CCMP support
 nodevice		wlan_tkip	# 802.11 TKIP support
 nodevice		wlan_amrr	# AMRR transmit rate control algorithm
 nodevice		an		# Aironet 4500/4800 802.11 wireless NICs.
-nodevice		ath		# Atheros NIC's
+nodevice		ath		# Atheros NICs
 nodevice		ath_pci		# Atheros pci/cardbus glue
 nodevice		ath_hal		# pci/cardbus chip support
 nooptions 	AH_SUPPORT_AR5416	# enable AR5416 tx/rx descriptors
