@@ -16,7 +16,7 @@
 # If you are in doubt as to the purpose or necessity of a line, check first
 # in NOTES.
 #
-# $FreeBSD: src/sys/amd64/conf/GENERIC,v 1.568.2.15 2012/08/29 15:38:18 gjb Exp $
+# $FreeBSD: src/sys/amd64/conf/GENERIC,v 1.568.2.16 2012/09/26 09:22:28 kib Exp $
 
 include 	GENERIC
 #cpu		HAMMER # Included in Generic
@@ -78,7 +78,6 @@ nooptions 	MAC			# TrustedBSD MAC Framework
 #options 	KDTRACE_FRAME		# Ensure frames are compiled in
 #options 	KDTRACE_HOOKS		# Kernel DTrace hooks
 #options 	INCLUDE_CONFIG_FILE     # Include this file in kernel
-
 #options 	KDB			# Kernel debugger related code
 #options 	KDB_TRACE		# Print a stack trace for a panic
 
@@ -286,6 +285,8 @@ nodevice		wpi		# Intel 3945ABG wireless NICs.
 # Pseudo devices.
 #device		loop		# Network loopback
 #device		random		# Entropy device
+nooptions 	PADLOCK_RNG	# VIA Padlock RNG
+nooptions 	RDRAND_RNG	# Intel Bull Mountain RNG
 #device		ether		# Ethernet support
 nodevice		vlan		# 802.1Q VLAN support
 nodevice		tun		# Packet tunnel.
