@@ -16,7 +16,7 @@
 # If you are in doubt as to the purpose or necessity of a line, check first
 # in NOTES.
 #
-# $FreeBSD: src/sys/amd64/conf/GENERIC,v 1.568.2.16 2012/09/26 09:22:28 kib Exp $
+# $FreeBSD: src/sys/amd64/conf/GENERIC,v 1.568.2.19 2013/01/26 06:03:10 svnexp Exp $
 
 include 	GENERIC
 #cpu		HAMMER # Included in Generic
@@ -46,6 +46,7 @@ nomakeoptions	DEBUG   		# Build kernel with gdb(1) debug symbols
 nooptions 	UFS_ACL			# Support for access control lists
 #options 	UFS_DIRHASH		# Improve performance on big directories
 nooptions 	UFS_GJOURNAL		# Enable gjournal-based UFS journaling
+nooptions 	QUOTA			# Enable disk quotas for UFS
 nooptions 	MD_ROOT			# MD is a potential root device
 nooptions 	NFSCL			# New Network Filesystem Client
 nooptions 	NFSD			# New Network Filesystem Server
@@ -144,6 +145,7 @@ nodevice		ciss		# Compaq Smart RAID 5*
 nodevice		dpt		# DPT Smartcache III, IV - See NOTES for options
 nodevice		hptmv		# Highpoint RocketRAID 182x
 nodevice		hptrr		# Highpoint RocketRAID 17xx, 22xx, 23xx, 25xx
+nodevice		hpt27xx		# Highpoint RocketRAID 27xx
 nodevice		iir		# Intel Integrated RAID
 nodevice		ips		# IBM (Adaptec) ServeRAID
 nodevice		mly		# Mylex AcceleRAID/eXtremeRAID
