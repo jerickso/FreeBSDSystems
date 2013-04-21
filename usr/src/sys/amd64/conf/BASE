@@ -46,6 +46,7 @@ nomakeoptions	DEBUG   		# Build kernel with gdb(1) debug symbols
 nooptions 	UFS_ACL			# Support for access control lists
 #options 	UFS_DIRHASH		# Improve performance on big directories
 nooptions 	UFS_GJOURNAL		# Enable gjournal-based UFS journaling
+nooptions 	QUOTA			# Enable disk quotas for UFS
 nooptions 	MD_ROOT			# MD is a potential root device
 nooptions 	NFSCL			# New Network Filesystem Client
 nooptions 	NFSD			# New Network Filesystem Server
@@ -144,6 +145,7 @@ nodevice		ciss		# Compaq Smart RAID 5*
 nodevice		dpt		# DPT Smartcache III, IV - See NOTES for options
 nodevice		hptmv		# Highpoint RocketRAID 182x
 nodevice		hptrr		# Highpoint RocketRAID 17xx, 22xx, 23xx, 25xx
+nodevice		hpt27xx		# Highpoint RocketRAID 27xx
 nodevice		iir		# Intel Integrated RAID
 nodevice		ips		# IBM (Adaptec) ServeRAID
 nodevice		mly		# Mylex AcceleRAID/eXtremeRAID
@@ -361,3 +363,11 @@ nodevice		snd_hda		# Intel High Definition Audio
 nodevice		snd_ich		# Intel, NVidia and other ICH AC'97 Audio
 nodevice		snd_uaudio	# USB Audio
 nodevice		snd_via8233	# VIA VT8233x Audio
+
+# VirtIO support
+nodevice		virtio		# Generic VirtIO bus (required)
+nodevice		virtio_pci	# VirtIO PCI Interface
+nodevice		vtnet		# VirtIO Ethernet device
+nodevice		virtio_blk	# VirtIO Block device
+nodevice		virtio_scsi	# VirtIO SCSI device
+nodevice		virtio_balloon	# VirtIO Memory Balloon device
