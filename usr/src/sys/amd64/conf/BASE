@@ -16,7 +16,7 @@
 # If you are in doubt as to the purpose or necessity of a line, check first
 # in NOTES.
 #
-# $FreeBSD: src/sys/amd64/conf/GENERIC,v 1.568.2.19 2013/01/26 06:03:10 svnexp Exp $
+# $FreeBSD: stable/10/sys/amd64/conf/GENERIC 259512 2013-12-17 13:49:35Z kib $
 
 include 	GENERIC
 #cpu		HAMMER # Included in Generic
@@ -40,6 +40,7 @@ nomakeoptions	DEBUG   		# Build kernel with gdb(1) debug symbols
 #options 	PREEMPTION		# Enable kernel thread preemption
 #options 	INET			# InterNETworking
 #options 	INET6			# IPv6 communications protocols
+#options 	TCP_OFFLOAD		# TCP offload
 #options 	SCTP			# Stream Control Transmission Protocol
 #options 	FFS			# Berkeley Fast Filesystem
 #options 	SOFTUPDATES		# Enable FFS soft updates support
@@ -75,12 +76,18 @@ nooptions 	SCSI_DELAY     		# Delay (in ms) before probing SCSI
 #options 	KBD_INSTALL_CDEV	# install a CDEV entry in /dev
 #options 	HWPMC_HOOKS		# Necessary kernel hooks for hwpmc(4)
 nooptions 	AUDIT			# Security event auditing
+nooptions 	CAPABILITY_MODE		# Capsicum capability mode
+nooptions 	CAPABILITIES		# Capsicum capabilities
+nooptions 	PROCDESC		# Support for process descriptors
 nooptions 	MAC			# TrustedBSD MAC Framework
 #options 	KDTRACE_FRAME		# Ensure frames are compiled in
 #options 	KDTRACE_HOOKS		# Kernel DTrace hooks
+#options 	DDB_CTF			# Kernel ELF linker loads CTF data
 #options 	INCLUDE_CONFIG_FILE     # Include this file in kernel
-#options 	KDB			# Kernel debugger related code
-#options 	KDB_TRACE		# Print a stack trace for a panic
+
+# Debugging support.  Always need this:
+#options 	KDB			# Enable kernel debugger support.
+#options 	KDB_TRACE		# Print a stack trace for a panic.
 
 # Make an SMP-capable kernel by default
 #options 	SMP			# Symmetric MultiProcessor Kernel
@@ -90,6 +97,7 @@ nooptions 	MAC			# TrustedBSD MAC Framework
 
 # Bus support.
 #device		acpi
+nooptions 	ACPI_DMAR
 #device		pci
 
 # Floppy drives
@@ -98,7 +106,6 @@ nodevice		fdc
 # ATA controllers
 #device		ahci		# AHCI-compatible SATA controllers
 #device		ata		# Legacy ATA/SATA controllers
-nooptions 	ATA_CAM		# Handle legacy controllers with CAM
 #options 	ATA_STATIC_ID	# Static device numbering
 nodevice		mvs		# Marvell 88SX50XX/88SX60XX/88SX70XX/SoC SATA
 nodevice		siis		# SiliconImage SiI3124/SiI3132/SiI3531 SATA
@@ -195,14 +202,13 @@ nodevice		uart		# Generic UART driver
 nodevice		ppc
 nodevice		ppbus		# Parallel port bus (required)
 nodevice		lpt		# Printer
-nodevice		plip		# TCP/IP over parallel
 nodevice		ppi		# Parallel port interface device
 #device		vpo		# Requires scbus and da
 
 nodevice		puc		# Multi I/O cards and multi-channel UARTs
 
 # PCI Ethernet NICs.
-nodevice		bxe		# Broadcom BCM57710/BCM57711/BCM57711E 10Gb Ethernet
+nodevice		bxe		# Broadcom NetXtreme II BCM5771X/BCM578XX 10GbE
 nodevice		de		# DEC/Intel DC21x4x (``Tulip'')
 nodevice		em		# Intel PRO/1000 Gigabit Ethernet Family
 nodevice		igb		# Intel PRO/1000 PCIE Server Gigabit Family
@@ -274,6 +280,8 @@ nodevice		ath		# Atheros NICs
 nodevice		ath_pci		# Atheros pci/cardbus glue
 nodevice		ath_hal		# pci/cardbus chip support
 nooptions 	AH_SUPPORT_AR5416	# enable AR5416 tx/rx descriptors
+nooptions 	AH_AR5416_INTERRUPT_MITIGATION	# AR5416 interrupt mitigation
+nooptions 	ATH_ENABLE_11N	# Enable 802.11n support for AR5416 and later
 nodevice		ath_rate_sample	# SampleRate tx rate control for ath
 nodevice		bwi		# Broadcom BCM430x/BCM431x wireless NICs.
 nodevice		bwn		# Broadcom BCM43xx wireless NICs.
@@ -289,12 +297,11 @@ nodevice		wpi		# Intel 3945ABG wireless NICs.
 # Pseudo devices.
 #device		loop		# Network loopback
 #device		random		# Entropy device
-nooptions 	PADLOCK_RNG	# VIA Padlock RNG
-nooptions 	RDRAND_RNG	# Intel Bull Mountain RNG
+nodevice		padlock_rng	# VIA Padlock RNG
+nodevice		rdrand_rng	# Intel Bull Mountain RNG
 #device		ether		# Ethernet support
 nodevice		vlan		# 802.1Q VLAN support
 nodevice		tun		# Packet tunnel.
-#device		pty		# BSD-style compatibility pseudo ttys
 nodevice		md		# Memory "disks"
 nodevice		gif		# IPv6 and IPv4 tunneling
 nodevice		faith		# IPv6-to-IPv4 relaying (translation)
@@ -312,48 +319,8 @@ nodevice		ohci		# OHCI PCI->USB interface
 #device		ehci		# EHCI PCI->USB interface (USB 2.0)
 nodevice		xhci		# XHCI PCI->USB interface (USB 3.0)
 #device		usb		# USB Bus (required)
-#device		udbp		# USB Double Bulk Pipe devices (needs netgraph)
-#device		uhid		# "Human Interface Devices"
 #device		ukbd		# Keyboard
-nodevice		ulpt		# Printer
 #device		umass		# Disks/Mass storage - Requires scbus and da
-nodevice		ums		# Mouse
-nodevice		urio		# Diamond Rio 500 MP3 player
-# USB Serial devices
-nodevice		u3g		# USB-based 3G modems (Option, Huawei, Sierra)
-nodevice		uark		# Technologies ARK3116 based serial adapters
-nodevice		ubsa		# Belkin F5U103 and compatible serial adapters
-nodevice		uftdi		# For FTDI usb serial adapters
-nodevice		uipaq		# Some WinCE based devices
-nodevice		uplcom		# Prolific PL-2303 serial adapters
-nodevice		uslcom		# SI Labs CP2101/CP2102 serial adapters
-nodevice		uvisor		# Visor and Palm devices
-nodevice		uvscom		# USB serial support for DDI pocket's PHS
-# USB Ethernet, requires miibus
-nodevice		aue		# ADMtek USB Ethernet
-nodevice		axe		# ASIX Electronics USB Ethernet
-nodevice		cdce		# Generic USB over Ethernet
-nodevice		cue		# CATC USB Ethernet
-nodevice		kue		# Kawasaki LSI USB Ethernet
-nodevice		rue		# RealTek RTL8150 USB Ethernet
-nodevice		udav		# Davicom DM9601E USB
-# USB Wireless
-nodevice		rum		# Ralink Technology RT2501USB wireless NICs
-nodevice		run		# Ralink Technology RT2700/RT2800/RT3000 NICs.
-nodevice		uath		# Atheros AR5523 wireless NICs
-nodevice		upgt		# Conexant/Intersil PrismGT wireless NICs.
-nodevice		ural		# Ralink Technology RT2500USB wireless NICs
-nodevice		urtw		# Realtek RTL8187B/L wireless NICs
-nodevice		zyd		# ZyDAS zd1211/zd1211b wireless NICs
-
-# FireWire support
-nodevice		firewire	# FireWire bus code
-# sbp(4) works for some systems but causes boot failure on others
-#device		sbp		# SCSI over FireWire (Requires scbus and da)
-nodevice		fwe		# Ethernet over FireWire (non-standard!)
-nodevice		fwip		# IP over FireWire (RFC 2734,3146)
-nodevice		dcons		# Dumb console driver
-nodevice		dcons_crom	# Configuration ROM for dcons
 
 # Sound support
 nodevice		sound		# Generic sound driver (required)
@@ -363,13 +330,28 @@ nodevice		snd_emu10kx	# Creative SoundBlaster Live! and Audigy
 nodevice		snd_es137x	# Ensoniq AudioPCI ES137x
 nodevice		snd_hda		# Intel High Definition Audio
 nodevice		snd_ich		# Intel, NVidia and other ICH AC'97 Audio
-nodevice		snd_uaudio	# USB Audio
 nodevice		snd_via8233	# VIA VT8233x Audio
+
+# MMC/SD
+nodevice		mmc		# MMC/SD bus
+nodevice		mmcsd		# MMC/SD memory card
+nodevice		sdhci		# Generic PCI SD Host Controller
 
 # VirtIO support
 nodevice		virtio		# Generic VirtIO bus (required)
-nodevice		virtio_pci	# VirtIO PCI Interface
+nodevice		virtio_pci	# VirtIO PCI device
 nodevice		vtnet		# VirtIO Ethernet device
 nodevice		virtio_blk	# VirtIO Block device
 nodevice		virtio_scsi	# VirtIO SCSI device
 nodevice		virtio_balloon	# VirtIO Memory Balloon device
+
+# HyperV drivers
+nodevice		hyperv		# HyperV drivers 
+
+# Xen HVM Guest Optimizations
+# NOTE: XENHVM depends on xenpci.  They must be added or removed together.
+nooptions 	XENHVM		# Xen HVM kernel infrastructure
+nodevice		xenpci		# Xen HVM Hypervisor services driver
+
+# VMware support
+device		vmx		# VMware VMXNET3 Ethernet
