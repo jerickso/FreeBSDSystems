@@ -1,4 +1,4 @@
-# $FreeBSD: src/etc/profile,v 1.14.30.2 2010/05/19 20:53:21 jilles Exp $
+# $FreeBSD: stable/10/etc/profile 208116 2010-05-15 17:49:56Z jilles $
 #
 # System-wide .profile file for sh(1).
 #
@@ -17,6 +17,6 @@
 # Allow terminal messages
 # mesg y
 
-CLICOLOR=YES;   export CLICOLOR
+CLICOLOR=YES;   export CLICOLOR;
 alias grep='grep --color'
 

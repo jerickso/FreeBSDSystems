@@ -1,4 +1,4 @@
-# $FreeBSD: src/etc/csh.cshrc,v 1.3.56.1 2009/08/03 08:13:06 kensmith Exp $
+# $FreeBSD: stable/10/etc/csh.cshrc 50472 1999-08-27 23:37:10Z peter $
 #
 # System-wide .cshrc file for csh(1).
 setenv CLICOLOR yes
