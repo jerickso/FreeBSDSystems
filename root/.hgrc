@@ -1,0 +1,12 @@
+[ui]
+username = Jason Erickson <jerickso@stickpeople.com>
+merge = vimdiff
+ssh = ssh -C
+
+[merge-tools]
+vimdiff.executable = vim
+vimdiff.arg = -d $base $local $output $other +close +close
+
+[extensions]
+hgext.record=
+#extdiff =
