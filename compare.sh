@@ -4,7 +4,20 @@
 #   of this system.  Also copies over the files if they do not exist
 #
 
+# Load Mergemaster
+if [ -r /usr/sbin/mergemaster ]; then
+#  . /usr/sbin/mergemaster
+fi
+
+usage () {
+  VERSION_NUMBER=`grep "[$]FBSDSystems:" $ 0 | cut -d '' -f 1`
+  echo "version ${VERSION_NUMBER}"
+}
+
+# Base directory where the merging files are located, right here!
 BASEDIR=$(dirname $0)
+
+# The compare script file, aka ME
 ABS_SCRIPT=$(readlink -f $0)
 
 # Script working directory
