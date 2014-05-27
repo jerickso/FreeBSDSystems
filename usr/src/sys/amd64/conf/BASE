@@ -16,7 +16,7 @@
 # If you are in doubt as to the purpose or necessity of a line, check first
 # in NOTES.
 #
-# $FreeBSD: stable/10/sys/amd64/conf/GENERIC 259512 2013-12-17 13:49:35Z kib $
+# $FreeBSD: stable/10/sys/amd64/conf/GENERIC 266329 2014-05-17 16:57:17Z ian $
 
 include 	GENERIC
 #cpu		HAMMER # Included in Generic
@@ -35,6 +35,7 @@ options 	KDB_UNATTENDED
 # env		"GENERIC.env"
 
 nomakeoptions	DEBUG   		# Build kernel with gdb(1) debug symbols
+nomakeoptions	WITH_CTF
 
 #options 	SCHED_ULE		# ULE scheduler
 #options 	PREEMPTION		# Enable kernel thread preemption
@@ -123,6 +124,7 @@ nodevice		isp		# Qlogic family
 nodevice		ispfw		# Firmware for QLogic HBAs- normally a module
 nodevice		mpt		# LSI-Logic MPT-Fusion
 nodevice		mps		# LSI-Logic MPT-Fusion 2
+nodevice		mpr		# LSI-Logic MPT-Fusion 3
 #device		ncr		# NCR/Symbios Logic
 nodevice		sym		# NCR/Symbios Logic (newer chipsets + those of `ncr')
 nodevice		trm		# Tekram DC395U/UW/F DC315U adapters
