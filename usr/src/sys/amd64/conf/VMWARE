@@ -4,3 +4,4 @@ ident		VMWARE
 
 device		mpt		# LSI-Logic MPT-Fusion
 device		em		# Intel PRO/1000 Gigabit Ethernet Family
+device		vmx		# VMware VMXNET3 Ethernet

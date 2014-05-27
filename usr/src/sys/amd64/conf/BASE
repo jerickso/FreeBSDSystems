@@ -356,4 +356,4 @@ nooptions 	XENHVM		# Xen HVM kernel infrastructure
 nodevice		xenpci		# Xen HVM Hypervisor services driver
 
 # VMware support
-device		vmx		# VMware VMXNET3 Ethernet
+nodevice		vmx		# VMware VMXNET3 Ethernet
