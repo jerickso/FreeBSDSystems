@@ -221,6 +221,8 @@ nodevice		de		# DEC/Intel DC21x4x (``Tulip'')
 nodevice		em		# Intel PRO/1000 Gigabit Ethernet Family
 nodevice		igb		# Intel PRO/1000 PCIE Server Gigabit Family
 nodevice		ixgbe		# Intel PRO/10GbE PCIE Ethernet Family
+nodevice		ixl		# Intel XL710 40Gbe PCIE Ethernet
+nodevice		ixlv		# Intel XL710 40Gbe VF PCIE Ethernet
 nodevice		le		# AMD Am7900 LANCE and Am79C9xx PCnet
 nodevice		ti		# Alteon Networks Tigon I/II gigabit Ethernet
 nodevice		txp		# 3Com 3cR990 (``Typhoon'')
