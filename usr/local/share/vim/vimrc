@@ -3,8 +3,8 @@ set nocompatible
 set nobackup
 set showcmd
 set incsearch
-set ch=2
-set shiftwidth=2
+set ch=4
+set shiftwidth=4
 set expandtab
 set modeline
 
