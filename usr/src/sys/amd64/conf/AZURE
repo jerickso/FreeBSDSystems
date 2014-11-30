@@ -1,0 +1,14 @@
+include 	BASE
+ident		AZURE
+
+device		hyperv		# HyperV drivers 
+
+device          uart
+
+device          cd
+
+nodevice        vt
+nodevice        vt_vga
+nodevice        vt_efifb
+nodevice        ukbd
+nodevice        umass
