@@ -7,7 +7,7 @@
 # these options.
 #
 # Do not create temporary backup packages before pkg_delete (-B)
-# NO_BACKUP=Bopt
+NO_BACKUP=Bopt
 #
 # Always save the backup packages of the old port (-b)
 # BACKUP=bopt
