@@ -15,15 +15,17 @@ if ( `/usr/bin/tty` =~ "/dev/pts/*" ) then
   if ( $?prompt ) then    # If interactive shell
     if ( $?loginsh ) then # If login shell
       if ( -x $TMUX_EXEC ) then   # If tmux exists
-        # Have exit just detach from TMUX if inside of it
-        alias exit 'if ( ! $?TMUX ) ""exit; if ( $?TMUX != "" ) tmux detach'
+        if ( $TERM !~ "screen*") then   # If not arleady in a TMUX session
+          # Have exit just detach from TMUX if inside of it
+          alias exit 'if ( ! $?TMUX ) ""exit; if ( $?TMUX != "" ) tmux detach'
 
-        if ( ! $?TMUX ) then
-          set WHOAMI=`/usr/bin/whoami`
-          if ! { $TMUX_EXEC has-session -t $WHOAMI >& /dev/null } then
-            exec $TMUX_EXEC new -s $WHOAMI
-          else
-            exec $TMUX_EXEC attach -t $WHOAMI
+          if ( ! $?TMUX ) then
+            set WHOAMI=`/usr/bin/whoami`
+            if ! { $TMUX_EXEC has-session -t $WHOAMI >& /dev/null } then
+              exec $TMUX_EXEC new -s $WHOAMI
+            else
+              exec $TMUX_EXEC attach -t $WHOAMI
+            endif
           endif
         endif
       endif

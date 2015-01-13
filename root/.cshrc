@@ -206,7 +206,5 @@ complete zfs    'p/1/(clone create destroy get inherit list mount promote \
 
 ( which vim ) > /dev/null && alias vi vim && setenv EDITOR vim
 
-alias exit 'if ( ! $?TMUX ) ""exit; if ( $?TMUX != "" ) tmux detach'
-
 
 # vim: set ft=csh:
