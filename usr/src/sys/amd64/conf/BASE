@@ -16,7 +16,7 @@
 # If you are in doubt as to the purpose or necessity of a line, check first
 # in NOTES.
 #
-# $FreeBSD: stable/10/sys/amd64/conf/GENERIC 271234 2014-09-07 18:43:26Z markj $
+# $FreeBSD: stable/10/sys/amd64/conf/GENERIC 272313 2014-09-30 16:55:19Z bz $
 
 include 	GENERIC
 #cpu		HAMMER # Included in Generic
@@ -193,7 +193,7 @@ nooptions 	SC_PIXEL_MODE	# add support for the raster text mode
 # vt is the new video console driver
 #device		vt
 #device		vt_vga
-#device		vt_efifb
+nodevice		vt_efifb
 
 nodevice		agp		# support several AGP chipsets
 
@@ -360,7 +360,7 @@ nodevice		hyperv		# HyperV drivers
 
 # Xen HVM Guest Optimizations
 # NOTE: XENHVM depends on xenpci.  They must be added or removed together.
-nooptions       	XENHVM		# Xen HVM kernel infrastructure
+nooptions 	XENHVM		# Xen HVM kernel infrastructure
 nodevice		xenpci		# Xen HVM Hypervisor services driver
 
 # VMware support
