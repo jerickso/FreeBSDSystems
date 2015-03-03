@@ -87,8 +87,8 @@ nooptions 	MAC			# TrustedBSD MAC Framework
 #options 	INCLUDE_CONFIG_FILE     # Include this file in kernel
 
 # Debugging support.  Always need this:
-#options 	KDB			# Enable kernel debugger support.
-#options 	KDB_TRACE		# Print a stack trace for a panic.
+nooptions 	KDB			# Enable kernel debugger support.
+nooptions 	KDB_TRACE		# Print a stack trace for a panic.
 
 # Make an SMP-capable kernel by default
 #options 	SMP			# Symmetric MultiProcessor Kernel
