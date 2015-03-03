@@ -11,7 +11,7 @@ BASE="$( cd "$( dirname "$0" )" && pwd )"
 
 
 # List of files to ignore
-IGNORE_FILES="${BASE}/readme.md"
+IGNORE_FILES="${BASE}/readme.md ${BASE}/.hgignore "
 if [ -d Merging ]; then
   for FILE in Merging/*
   do
@@ -95,8 +95,8 @@ do
     then
       echo FORCE COPY: Files Differ ${FILE}
       cp ${FILE} ${NEWFILE}
+    else
+      diff_loop ${FILE} ${NEWFILE}
     fi
-
-    diff_loop ${FILE} ${NEWFILE}
   done
 done
