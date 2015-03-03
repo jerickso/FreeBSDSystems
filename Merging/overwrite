@@ -1,0 +1,15 @@
+etc/csh.cshrc
+etc/mergemaster.rc
+etc/profile
+etc/src.conf
+etc/ttys
+root/.cshrc
+root/.login
+root/.tmux.conf
+root/.login_conf
+usr/local/etc/portmaster.rc
+usr/local/share/vim/vimrc
+usr/src/sys/amd64/conf/AZURE
+usr/src/sys/amd64/conf/BASE
+usr/src/sys/amd64/conf/GOOGLE
+usr/src/sys/amd64/conf/VMWARE

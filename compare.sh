@@ -4,9 +4,35 @@
 #   of this system.  Also copies over the files if they do not exist
 #
 
+
+
+# Script working directory (Full path)
+BASE="$( cd "$( dirname "$0" )" && pwd )"
+
+
+# List of files to ignore
+IGNORE_FILES="${BASE}/readme.md"
+if [ -d Merging ]; then
+  for FILE in Merging/*
+  do
+    IGNORE_FILES="${IGNORE_FILES} ${BASE}/${FILE}"
+  done
+fi
+
+# The merge script file, aka this script
+ABS_SCRIPT=$(readlink -f $0)
+IGNORE_FILES="${IGNORE_FILES} ${ABS_SCRIPT}"
+
+
+OVERWRITE_FILES=""
+# List of file to overwrite
+if [ -r Merging/overwrite ] ; then
+  OVERWRITE_FILES=`cat Merging/overwrite`
+fi
+
 # Load Mergemaster
-if [ -r /usr/sbin/mergemaster ]; then
-#  . /usr/sbin/mergemaster
+if [ -r Merging/functions.sh ]; then
+  . Merging/functions.sh
 fi
 
 usage () {
@@ -14,27 +40,39 @@ usage () {
   echo "version ${VERSION_NUMBER}"
 }
 
-# Base directory where the merging files are located, right here!
-BASEDIR=$(dirname $0)
-
-# The compare script file, aka ME
-ABS_SCRIPT=$(readlink -f $0)
-
-# Script working directory
-SWD="$( cd "$( dirname "$0" )" && pwd )"
-
 # Grab all the files, ignoring the .hg directory
-for FILE in `find "${SWD}" -not -path "${SWD}/.hg/*" -type f`;
+FILES=`find "${BASE}" -type f -not -path "${BASE}/.hg/*"`
+for FILE in $FILES
 do
-  # Ignore this script file
-  [ ${FILE} = ${ABS_SCRIPT} ] && continue
+  # Determine if we need to ignore the file
+  SKIP_FILE=
+  for IGNORE_FILE in ${IGNORE_FILES}
+  do
+    if [ ${FILE} = ${IGNORE_FILE} ]
+    then
+      SKIP_FILE=True
+      continue
+    fi
+  done
 
-  NEWFILE=${FILE#${SWD}}
+  [ ${SKIP_FILE} ] && continue
+
+  NEWFILE=${FILE#${BASE}}
+
+  FORCE_FILE=
+  for OVERWRITE_FILE in ${OVERWRITE_FILES}
+  do
+    if [ ${FILE} = ${OVERWRITE_FILE} ]
+    then
+      FORCE_FILE=True
+      continue
+    fi
+  done
 
   # Copy the file over if it does not exist
   if [ ! -f ${NEWFILE} ]
   then
-    echo Copying ${FILE} to ${NEWFILE}
+    echo New File: Copying ${FILE} to ${NEWFILE}
     cp ${FILE} ${NEWFILE}
     continue
   fi
@@ -43,6 +81,22 @@ do
   #
   for RESULT in `diff -rq ${FILE} ${NEWFILE} | grep "^Files.*differ$" | sed 's/^Files \(.*\) and .* differ$/\1/'` 
   do
-    echo File differs ${RESULT}
+    FORCE_FILE=
+    for OVERWRITE_FILE in ${OVERWRITE_FILES}
+    do
+      if [ ${FILE} = ${BASE}/${OVERWRITE_FILE} ]
+      then
+        FORCE_FILE=True
+        continue
+      fi
+    done
+
+    if [ ${FORCE_FILE} ]
+    then
+      echo FORCE COPY: Files Differ ${FILE}
+      cp ${FILE} ${NEWFILE}
+    fi
+
+    diff_loop ${FILE} ${NEWFILE}
   done
 done
