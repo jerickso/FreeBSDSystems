@@ -1,12 +1,18 @@
-# $FreeBSD: stable/10/etc/root/dot.login 243153 2012-11-16 14:25:13Z eadler $
+# $FreeBSD: stable/10/etc/csh.login 208116 2010-05-15 17:49:56Z jilles $
 #
-# .login - csh login script, read by login shell, after `.cshrc' at login.
+# System-wide .login file for csh(1).
+# Uncomment this to give you the default 4.2 behavior, where disk
+# information is shown in K-Blocks
+# setenv BLOCKSIZE	K
 #
-# see also csh(1), environ(7).
+# For the setting of languages and character sets please see
+# login.conf(5) and in particular the charset and lang options.
+# For full locales list check /usr/share/locale/*
 #
-
-# Uncomment to display a random cookie each login:
-# if ( -x /usr/games/fortune ) /usr/games/fortune -s
+# Check system messages
+# msgs -q
+# Allow terminal messages
+# mesg y
 
 set TMUX_EXEC = /usr/local/bin/tmux
 
@@ -32,6 +38,5 @@ if ( `/usr/bin/tty` =~ "/dev/pts/*" ) then
     endif
   endif
 endif
-
 
 # vim: set ft=csh:
