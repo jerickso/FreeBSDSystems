@@ -77,7 +77,6 @@ do
     continue
   fi
 
-#  RESULTS=`diff -rq $FILE ${NEWFILE} 2>&1`
   #
   for RESULT in `diff -rq ${FILE} ${NEWFILE} | grep "^Files.*differ$" | sed 's/^Files \(.*\) and .* differ$/\1/'` 
   do
@@ -98,5 +97,8 @@ do
     else
       diff_loop ${FILE} ${NEWFILE}
     fi
+
+    # Do we need to do anything to this file if we install it
+    after_install ${NEWFILE}
   done
 done

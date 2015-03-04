@@ -103,3 +103,10 @@ diff_loop () {
   done
   echo ''
 }
+
+after_install () {
+  DESTFILE=$1
+  if [ ${DESTFILE} = "/etc/login.conf"]
+    cap_mkdb /etc/login.conf
+  fi
+}
