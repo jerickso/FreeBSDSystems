@@ -30,7 +30,14 @@ if [ -r Merging/overwrite ] ; then
   OVERWRITE_FILES=`cat Merging/overwrite`
 fi
 
-# Load Mergemaster
+DELETEME_FILES=""
+# List of files to delete that have been either 'moved' or abandoned
+if [ -r Merging/deleteme ] ; then
+  DELETEME_FILES=`cat Merging/deleteme`
+fi
+
+
+# Load Mergemaster type functions (taken from Mergemaster)
 if [ -r Merging/functions.sh ]; then
   . Merging/functions.sh
 fi
@@ -59,6 +66,7 @@ do
 
   NEWFILE=${FILE#${BASE}}
 
+  # Determine if we always overwrite this file
   FORCE_FILE=
   for OVERWRITE_FILE in ${OVERWRITE_FILES}
   do
@@ -102,3 +110,29 @@ do
     after_install ${NEWFILE}
   done
 done
+
+for DELETEME_FILE in ${DELETEME_FILES}
+do
+    NEWFILE=${DELETEME_FILE#${BASE}}
+    if [ -f ${NEWFILE} ]
+    then
+        echo '=========================================================='
+        echo ''
+        echo '  The following file has been removed: '
+        echo '     ' ${NEWFILE}
+        echo ''
+        echo -n '  Would you like to delete it (y/n)? '
+        read REMOVE_FILE
+        echo
+        case ${REMOVE_FILE} in
+            [yY])
+                echo 'Removing file: ' ${NEWFILE}
+                rm ${NEWFILE}
+                ;;
+            *)
+                echo 'Leaving file: ' ${NEWFILE}
+                ;;
+        esac
+    fi
+done
+
