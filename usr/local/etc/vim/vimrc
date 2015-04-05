@@ -13,12 +13,20 @@ set tabstop=4     " Tab size
 set softtabstop=4 " Spaces in tab when editing
 set shiftwidth=4  " > Shifts 4 spaces
 set expandtab     " Convert tabs to spaces
+set smarttab
 set modeline
 set lazyredraw    " Minimize redraws
 set showmatch     " Highlight matching [{()}]
-set cursorline   " Highlight/underline current line
+set cursorline    " Highlight/underline current line
 "set number       " Show line numbers on left
 "set wildmenu     " Visual autocomplete command menu
+"set wildmode=longest,full  " Nicer autocompletion
+"set list         " Show tabs and spaces at the end of the line
+"set listchars=tab:>-,trail:.,extends:>,precedes:<,nbsp:_
+"set autoread     " Automatically reload files when changed on disk
+"if has("linebreak")
+"    let &sbr = nr2char(8168).' '
+"endif
 
 if &t_Co > 2 || has("gui_running")
     syntax on
@@ -44,6 +52,7 @@ if has("autocmd")
     else
         autocmd BufNewFile /usr/ports/*/*/Makefile 0r /usr/ports/Templates/Makefile
     endif
+    augroup END
 
     " Enable file type detection.
     " Use the default filetype settings, so that mail gets 'tw' set to 72,
@@ -60,6 +69,9 @@ if has("autocmd")
 
     " For git commit message, run it through spell
     autocmd Filetype gitcommit setlocal spell textwidth=72
+    
+    " For mercurial
+    autocmd BufNewFile,BufRead hg-editor-*.txt setf hgcommit spell set tw=72 cc=51,+1
 
     " When editing a file, always jump to the last known cursor position.
     " Don't do it when the position is invalid or when inside an event handler
@@ -89,4 +101,7 @@ if v:lang =~ "utf8$" || v:lang =~ "UTF-8$"
 endif
 
 let g:is_posix = 1
+
+" Point runtimepath to include /usr/local/etc/vim/after
+let &rtp=&rtp.',/usr/local/etc/vim/after'
 
