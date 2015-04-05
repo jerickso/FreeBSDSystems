@@ -9,7 +9,7 @@ The files are laid out in a filesystem layout and for the most part will be copi
 
 Preconfigured Kernel Configs
 ----------------------------
-*FreeBSDSystems* has some predefined Kernel configs ready for use for the amd64 verions (located in /usr/src/sys/amd64/conf).  They are:
+*FreeBSDSystems* has some predefined Kernel configs ready for use for the amd64 versions (located in /usr/src/sys/amd64/conf).  They are:
 
 * BASE - All other configs import this.  BASE imports the GENERIC Config and removes most items/drivers that are not necessary for a BASE kernel.  By importing GENERIC, any additions to GENERIC will show up in BASE without having to modify it.
 * VMWARE - For use as guests on VMWare Servers
@@ -27,9 +27,9 @@ I use the included csh shell in FreeBSD.  The login scripts can be adapted to wo
 
 compare.sh
 ----------
-Since I seem to be constantly tweaking files and configs, I needed a way to keep running systems, as well as new systems, somewhat consistant.  This script aids in coping over new files, as well as merging changes into existing files.  It borrows some functionality from mergemaster.
+Since I seem to be constantly tweaking files and configs, I needed a way to keep running systems, as well as new systems, somewhat consistent.  This script aids in coping over new files, as well as merging changes into existing files.  It borrows some functionality from mergemaster.
 
-It runs by issueing:
+It runs by issuing:
 `./compare.sh`
 
 Do note, that all the files listed in the file `Merging/overwrite` will be overwritten without prompting
@@ -78,7 +78,7 @@ This directory is only used for the compare script.
 
 License
 =======
-All files are in the public domain within the United States, with copyright and releated rights in the work worldwide waived through the [Creative Commons CC0 1.0 Public Domain Dedication](https://creativecommons.org/publicdomain/zero/1.0/).
+All files are in the public domain within the United States, with copyright and related rights in the work worldwide waived through the [Creative Commons CC0 1.0 Public Domain Dedication](https://creativecommons.org/publicdomain/zero/1.0/).
 
 All contributions to this project will be released under the CC0 dedication.  By submitting a pull request, you are agreeing to comply with this waiver of copyright interest.
 
