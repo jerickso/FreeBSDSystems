@@ -11,4 +11,5 @@ vimdiff.arg = -d $base $local $output $other +close +close
 hgext.record =
 hgext.bookmarks =
 hggit =
+color =
 #extdiff =
