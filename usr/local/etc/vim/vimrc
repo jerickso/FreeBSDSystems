@@ -73,7 +73,7 @@ if has("autocmd")
     " For mercurial
     autocmd BufNewFile,BufRead hg-editor-*.txt setf hgcommit setlocal spell
 
-    autocmd BufRead,BufNewFile *.md setf markdown setlocal spell
+    autocmd BufRead,BufNewFile *.md setlocal spell filetype=markdown
 
     " When editing a file, always jump to the last known cursor position.
     " Don't do it when the position is invalid or when inside an event handler
