@@ -71,7 +71,7 @@ if has("autocmd")
     autocmd Filetype gitcommit setlocal spell textwidth=72
     
     " For mercurial
-    autocmd BufNewFile,BufRead hg-editor-*.txt setf hgcommit setlocal spell
+    autocmd BufNewFile,BufRead hg-editor-*.txt setlocal spell filetype=hgcommit
 
     autocmd BufRead,BufNewFile *.md setlocal spell filetype=markdown
 
