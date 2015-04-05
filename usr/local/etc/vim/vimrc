@@ -71,7 +71,9 @@ if has("autocmd")
     autocmd Filetype gitcommit setlocal spell textwidth=72
     
     " For mercurial
-    autocmd BufNewFile,BufRead hg-editor-*.txt setf hgcommit spell set tw=72 cc=51,+1
+    autocmd BufNewFile,BufRead hg-editor-*.txt setf hgcommit setlocal spell
+
+    autocmd BufRead,BufNewFile *.md setf markdown setlocal spell
 
     " When editing a file, always jump to the last known cursor position.
     " Don't do it when the position is invalid or when inside an event handler
@@ -104,4 +106,6 @@ let g:is_posix = 1
 
 " Point runtimepath to include /usr/local/etc/vim/after
 let &rtp=&rtp.',/usr/local/etc/vim/after'
+
+set spellfile=/usr/local/etc/vim/spell/en.utf-8.add
 
