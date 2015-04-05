@@ -1,0 +1,10 @@
+[push]
+	default = simple
+[core]
+	pager = less -r
+[diff]
+	tool = vimdiff
+[merge]
+	tool = vimdiff
+[difftool]
+	prompt = false
