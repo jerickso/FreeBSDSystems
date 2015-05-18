@@ -22,9 +22,6 @@ if ( `/usr/bin/tty` =~ "/dev/pts/*" ) then
     if ( $?loginsh ) then # If login shell
       if ( -x $TMUX_EXEC ) then   # If tmux exists
         if ( $TERM !~ "screen*") then   # If not arleady in a TMUX session
-          # Have exit just detach from TMUX if inside of it
-          alias exit 'if ( ! $?TMUX ) ""exit; if ( $?TMUX != "" ) tmux detach'
-
           if ( ! $?TMUX ) then
             set WHOAMI=`/usr/bin/whoami`
             if ! { $TMUX_EXEC has-session -t $WHOAMI >& /dev/null } then
