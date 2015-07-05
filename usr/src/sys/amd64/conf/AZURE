@@ -3,7 +3,9 @@ ident		AZURE
 
 options         HYPERV
 device          hyperv		# HyperV drivers 
-#device          uart
+device          uart
+
+device		fdc
 
 device          cd
 nooptions       MSDOSFS
