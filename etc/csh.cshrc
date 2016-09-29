@@ -1,11 +1,51 @@
-# $FreeBSD: stable/10/etc/csh.cshrc 50472 1999-08-27 23:37:10Z peter $
+# $FreeBSD: stable/10/etc/root/dot.cshrc 243893 2012-12-05 13:56:39Z eadler $
 #
-# System-wide .cshrc file for csh(1).
-setenv CLICOLOR yes
+# .cshrc - csh resource script, read at beginning of execution by each shell
+#
+# see also csh(1), environ(7).
+# more examples available at /usr/share/examples/csh/
+#
 
-# Some completions taken from around the web with some of the more interesting
-# ones taken from:
-#                   http://www.wonkity.com/~wblock/csh/completions
+alias h		history 25
+alias j		jobs -l
+alias la	ls -aF
+alias lf	ls -FA
+alias ll	ls -lAF
+
+# A righteous umask
+umask 22
+
+set path = (/sbin /bin /usr/sbin /usr/bin /usr/games /usr/local/sbin /usr/local/bin $HOME/bin)
+
+setenv	EDITOR	vi
+setenv	PAGER	more
+setenv	BLOCKSIZE	K
+
+setenv NCURSES_NO_UTF8_ACS 1
+
+if ($?prompt) then
+	# An interactive shell -- set some stuff up
+	set prompt = "%N@%m:%~ %# "
+	set promptchars = "%#"
+
+	set filec
+	set history = 1000
+	set savehist = (1000 merge)
+	set autolist = ambiguous
+	# Use history to aid expansion
+	set autoexpand
+	set autorehash
+	set mail = (/var/mail/$USER)
+	if ( $?tcsh ) then
+		bindkey "^W" backward-delete-word
+		bindkey -k up history-search-backward
+		bindkey -k down history-search-forward
+	endif
+
+endif
+
+
+# http://www.wonkity.com/~wblock/csh/completions
 
 complete cd             'p/1/d/'
 complete chown          'p/1/u/'
@@ -161,13 +201,43 @@ complete zfs    'p/1/(clone create destroy get inherit list mount promote \
                      'n/unmount/x:[-f] -a | filesystem|mountpoint/' \
                      'n/unshare/x:-a | filesystem|mountpoint/'
 
+# List of known git subcommands
+# # This is a hard-coded list to avoid calling 'git help' at startup.
+set __git_cmd_names = (add bisect blame branch checkout clone commit config \
+        diff diff-files difftool fetch grep gui init log merge mv pull push \
+        rebase reset rm show shortlog stash status tag)
 
+alias __git_aliases 'git config --get-regexp "alias.*" | sed -n "s,alias\.\([^ ]*\).*,\1,p"'
+alias __git_branches 'git for-each-ref –format="%(refname)" refs/heads refs/remotes | sed -e s,refs/remotes/,, | sed -e s,refs/heads/,,'
+alias __git_origin_branches 'git for-each-ref –format="%(refname)" refs/remotes/origin | grep -v HEAD | sed -e s,refs/remotes/origin/,,'
+#
+# # Define the completions (see the tcsh man page).
+complete git \
+          'p/1/`__git_aliases | xargs echo $__git_cmd_names`/' \
+          'n/help/($__git_cmd_names)/' \
+          'n/branch/`__git_branches | xargs echo -m -d`/' \
+          'n/config/(–global –get-regexp –list)/' \
+          'n/diff/`__git_branches | xargs echo –check –staged –stat -- *`/' \
+          'n/difftool/`__git_branches | xargs echo –no-prompt –staged -- *`/' \
+          'n/fetch/`git remote`/' \
+          'n/merge/`__git_branches`/' \
+          'n/log/`__git_branches | xargs echo -- –name-only –name-status –reverse –committer= –no-color –relative –ignore-space-change –ignore-space-at-eol –format=medium –format=full –format=fuller`/' \
+          'n/stash/(apply list save pop clear)/' \
+          'n/push/`git remote`/' \
+          'N/push/`__git_origin_branches`/' \
+          'n/pull/`git remote | xargs echo –rebase`/' \
+          'n/–rebase/`git remote`/' \
+          'N/–rebase/`__git_origin_branches`/' \
+          'N/pull/`__git_origin_branches`/' \
+          'n/rebase/`__git_branches | xargs echo –continue –abort –onto –skip –interactive`/' \
+          'N/rebase/`__git_branches`/' \
+          'n/remote/(show add rm prune update)/' \
+          'N/remote/`git remote`/' \
+          'n/checkout/`__git_branches | xargs echo -b –`/' \
+          'N/-b/`__git_branches`/'
 
 
 ( which vim ) > /dev/null && alias vi vim && setenv EDITOR vim
-
-# TMUX exit alias
-alias exit 'if ( ! $?TMUX ) ""exit; if ( $?TMUX != "" ) tmux detach'
 
 
 # vim: set ft=csh:
