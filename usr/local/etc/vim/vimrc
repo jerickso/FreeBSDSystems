@@ -1,4 +1,7 @@
 set nocompatible
+
+let skip_defaults_vim=1
+
 set backspace=indent,eol,start
 set history=50
 set ruler
@@ -39,6 +42,7 @@ else
     set background=dark
 endif
 
+set mouse=
 
 "colorscheme solarized
 
