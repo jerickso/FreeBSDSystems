@@ -1,7 +1,6 @@
 include 	BASE
 ident		AZURE
 
-options         HYPERV
 device          hyperv		# HyperV drivers 
 device          uart
 
