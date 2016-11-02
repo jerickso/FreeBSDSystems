@@ -1,10 +1,6 @@
-# $FreeBSD: stable/10/etc/root/dot.cshrc 243893 2012-12-05 13:56:39Z eadler $
+# $FreeBSD: stable/11/etc/csh.cshrc 50472 1999-08-27 23:37:10Z peter $
 #
-# .cshrc - csh resource script, read at beginning of execution by each shell
-#
-# see also csh(1), environ(7).
-# more examples available at /usr/share/examples/csh/
-#
+# System-wide .cshrc file for csh(1).
 
 alias h		history 25
 alias j		jobs -l
