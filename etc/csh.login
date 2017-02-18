@@ -25,8 +25,19 @@ if ( `/usr/bin/tty` =~ "/dev/pts/*" ) then
           if ( ! $?TMUX ) then
             set WHOAMI=`/usr/bin/whoami`
             if ! { $TMUX_EXEC has-session -t $WHOAMI >& /dev/null } then
+              # Resize terminal window width to be 82 columns
+              printf '[8;;82t'
+              # In tmux, the string is 'Ptmux;[8;;82t\'
               exec $TMUX_EXEC new -s $WHOAMI
             else
+              # Resize terminal window based upon existing window
+              set OTHERDIM=`tmux ls | cut -f 2 -d'[' | cut -f 1 -d']'`
+              set OTHERWIDTH=`echo $OTHERDIM | cut -f 2 -d'x'`
+              set OTHERHEIGHT=`echo $OTHERDIM | cut -f 1 -d'x'`
+              printf '[8;%s;%st' `echo $OTHERWIDTH+1 | bc` `echo $OTHERHEIGHT`
+              unset OTHERDIM
+              unset OTHERWIDTH
+              unset OTHERHEIGHT
               exec $TMUX_EXEC attach -t $WHOAMI
             endif
           endif
