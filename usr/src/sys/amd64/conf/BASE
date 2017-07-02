@@ -16,7 +16,7 @@
 # If you are in doubt as to the purpose or necessity of a line, check first
 # in NOTES.
 #
-# $FreeBSD: stable/11/sys/amd64/conf/GENERIC 302410 2016-07-08 00:22:14Z gjb $
+# $FreeBSD: stable/11/sys/amd64/conf/GENERIC 318763 2017-05-24 00:00:55Z jhb $
 
 include 	GENERIC
 #cpu		HAMMER # Included in Generic
@@ -98,6 +98,7 @@ nooptions 	KDB_TRACE		# Print a stack trace for a panic.
 # Make an SMP-capable kernel by default
 #options 	SMP			# Symmetric MultiProcessor Kernel
 #options 	DEVICE_NUMA		# I/O Device Affinity
+#options 	EARLY_AP_STARTUP
 
 # CPU frequency control
 #device		cpufreq
