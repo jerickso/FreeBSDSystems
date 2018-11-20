@@ -16,7 +16,7 @@
 # If you are in doubt as to the purpose or necessity of a line, check first
 # in NOTES.
 #
-# $FreeBSD: stable/11/sys/amd64/conf/GENERIC 323770 2017-09-19 16:51:51Z jpaetzel $
+# $FreeBSD: stable/11/sys/amd64/conf/GENERIC 333417 2018-05-09 16:14:12Z sbruno $
 
 include 	GENERIC
 #cpu		HAMMER # Included in Generic
@@ -143,6 +143,7 @@ nodevice		adw		# Advansys wide SCSI adapters
 nodevice		aic		# Adaptec 15[012]x SCSI adapters, AIC-6[23]60.
 nodevice		bt		# Buslogic/Mylex MultiMaster SCSI adapters
 nodevice		isci		# Intel C600 SAS controller
+nodevice		ocs_fc			# Emulex FC adapters
 
 # ATA/SCSI peripherals
 #device		scbus		# SCSI bus (required for ATA/SCSI)
@@ -167,6 +168,7 @@ nodevice		iir		# Intel Integrated RAID
 nodevice		ips		# IBM (Adaptec) ServeRAID
 nodevice		mly		# Mylex AcceleRAID/eXtremeRAID
 nodevice		twa		# 3ware 9000 series PATA/SATA RAID
+nodevice        smartpqi                # Microsemi smartpqi driver
 nodevice		tws		# LSI 3ware 9750 SATA+SAS 6Gb/s RAID controller
 
 # RAID controllers
