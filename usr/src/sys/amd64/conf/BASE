@@ -4,11 +4,11 @@
 # For more information on this file, please read the config(5) manual page,
 # and/or the handbook section on Kernel Configuration Files:
 #
-#    http://www.FreeBSD.org/doc/en_US.ISO8859-1/books/handbook/kernelconfig-config.html
+#    https://www.FreeBSD.org/doc/en_US.ISO8859-1/books/handbook/kernelconfig-config.html
 #
 # The handbook is also available locally in /usr/share/doc/handbook
 # if you've installed the doc distribution, otherwise always see the
-# FreeBSD World Wide Web server (http://www.FreeBSD.org/) for the
+# FreeBSD World Wide Web server (https://www.FreeBSD.org/) for the
 # latest information.
 #
 # An exhaustive list of options and more detailed explanations of the
@@ -16,7 +16,7 @@
 # If you are in doubt as to the purpose or necessity of a line, check first
 # in NOTES.
 #
-# $FreeBSD: stable/11/sys/amd64/conf/GENERIC 333417 2018-05-09 16:14:12Z sbruno $
+# $FreeBSD: stable/12/sys/amd64/conf/GENERIC 340695 2018-11-20 19:37:09Z zeising $
 
 include 	GENERIC
 #cpu		HAMMER # Included in Generic
@@ -38,12 +38,17 @@ nomakeoptions	DEBUG   		# Build kernel with gdb(1) debug symbols
 nomakeoptions	WITH_CTF
 
 #options 	SCHED_ULE		# ULE scheduler
+#options 	NUMA			# Non-Uniform Memory Architecture support
 #options 	PREEMPTION		# Enable kernel thread preemption
+nooptions 	VIMAGE			# Subsystem virtualization, e.g. VNET
 #options 	INET			# InterNETworking
 #options 	INET6			# IPv6 communications protocols
 nooptions 	IPSEC			# IP (v4/v6) security
 nooptions 	IPSEC_SUPPORT		# Allow kldload of ipsec and tcpmd5
 #options 	TCP_OFFLOAD		# TCP offload
+nooptions 	TCP_BLACKBOX		# Enhanced TCP event logging
+nooptions 	TCP_HHOOK		# hhook(9) framework for TCP
+#options		TCP_RFC7413		# TCP Fast Open
 #options 	SCTP			# Stream Control Transmission Protocol
 #options 	FFS			# Berkeley Fast Filesystem
 #options 	SOFTUPDATES		# Enable FFS soft updates support
@@ -60,9 +65,9 @@ nooptions 	NFS_ROOT		# NFS usable as /, requires NFSCL
 #options 	CD9660			# ISO 9660 Filesystem
 #options 	PROCFS			# Process filesystem (requires PSEUDOFS)
 #options 	PSEUDOFS		# Pseudo-filesystem framework
-#options 	GEOM_PART_GPT		# GUID Partition Tables.
 #options 	GEOM_RAID		# Soft RAID functionality.
 #options 	GEOM_LABEL		# Provides labelization
+nooptions 	EFIRT			# EFI Runtime Services support
 #options 	COMPAT_FREEBSD32	# Compatible with i386 binaries
 nooptions 	COMPAT_FREEBSD4		# Compatible with FreeBSD4
 nooptions 	COMPAT_FREEBSD5		# Compatible with FreeBSD5
@@ -70,6 +75,7 @@ nooptions 	COMPAT_FREEBSD6		# Compatible with FreeBSD6
 nooptions 	COMPAT_FREEBSD7		# Compatible with FreeBSD7
 nooptions 	COMPAT_FREEBSD9		# Compatible with FreeBSD9
 nooptions 	COMPAT_FREEBSD10	# Compatible with FreeBSD10
+#nooptions 	COMPAT_FREEBSD11	# Compatible with FreeBSD11
 nooptions 	SCSI_DELAY     		# Delay (in ms) before probing SCSI
 #options 	KTRACE			# ktrace(1) support
 #options 	STACK			# stack(9) support
@@ -96,9 +102,14 @@ nooptions 	RCTL			# Resource limits
 nooptions 	KDB			# Enable kernel debugger support.
 nooptions 	KDB_TRACE		# Print a stack trace for a panic.
 
+# Kernel dump features.
+nooptions 	EKCD			# Support for encrypted kernel dumps
+options 	GZIO			# gzip-compressed kernel and user dumps
+options 	ZSTDIO			# zstd-compressed kernel and user dumps
+options 	NETDUMP			# netdump(4) client support
+
 # Make an SMP-capable kernel by default
 #options 	SMP			# Symmetric MultiProcessor Kernel
-#options 	DEVICE_NUMA		# I/O Device Affinity
 #options 	EARLY_AP_STARTUP
 
 # CPU frequency control
@@ -137,11 +148,6 @@ nodevice		mpr		# LSI-Logic MPT-Fusion 3
 #device		ncr		# NCR/Symbios Logic
 nodevice		sym		# NCR/Symbios Logic (newer chipsets + those of `ncr')
 nodevice		trm		# Tekram DC395U/UW/F DC315U adapters
-
-nodevice		adv		# Advansys SCSI adapters
-nodevice		adw		# Advansys wide SCSI adapters
-nodevice		aic		# Adaptec 15[012]x SCSI adapters, AIC-6[23]60.
-nodevice		bt		# Buslogic/Mylex MultiMaster SCSI adapters
 nodevice		isci		# Intel C600 SAS controller
 nodevice		ocs_fc			# Emulex FC adapters
 
@@ -233,11 +239,10 @@ nodevice		puc		# Multi I/O cards and multi-channel UARTs
 nodevice		bxe		# Broadcom NetXtreme II BCM5771X/BCM578XX 10GbE
 nodevice		de		# DEC/Intel DC21x4x (``Tulip'')
 nodevice		em		# Intel PRO/1000 Gigabit Ethernet Family
-nodevice		igb		# Intel PRO/1000 PCIE Server Gigabit Family
 nodevice		ix			# Intel PRO/10GbE PCIE PF Ethernet
 nodevice		ixv			# Intel PRO/10GbE PCIE VF Ethernet
-nodevice		ixl		# Intel XL710 40Gbe PCIE Ethernet
-nodevice		ixlv		# Intel XL710 40Gbe VF PCIE Ethernet
+nodevice		ixl			# Intel 700 Series Physical Function
+nodevice		iavf			# Intel Adaptive Virtual Function
 nodevice		le		# AMD Am7900 LANCE and Am79C9xx PCnet
 nodevice		ti		# Alteon Networks Tigon I/II gigabit Ethernet
 nodevice		txp		# 3Com 3cR990 (``Typhoon'')
@@ -309,6 +314,7 @@ nodevice		wi		# WaveLAN/Intersil/Symbol 802.11 wireless NICs.
 nodevice		wpi		# Intel 3945ABG wireless NICs.
 
 # Pseudo devices.
+device		crypto			# core crypto support
 #device		loop		# Network loopback
 #device		random		# Entropy device
 nodevice		padlock_rng	# VIA Padlock RNG
@@ -372,5 +378,7 @@ nodevice		vmx		# VMware VMXNET3 Ethernet
 # Netmap provides direct access to TX/RX rings on supported NICs
 nodevice		netmap			# netmap(4) support
 
-# The crypto framework is required by IPSEC
-nodevice		crypto			# Required by IPSEC
+# evdev interface
+nooptions 	EVDEV_SUPPORT		# evdev support in legacy drivers
+nodevice		evdev			# input event device support
+nodevice		uinput			# install /dev/uinput cdev
