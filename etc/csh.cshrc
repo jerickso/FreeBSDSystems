@@ -43,7 +43,10 @@ endif
 
 # http://www.wonkity.com/~wblock/csh/completions
 
+complete bunzip2        'p/*/f:*.{bz2,tbz2}/'
 complete cd             'p/1/d/'
+complete chdir          'p/1/d/'
+complete chgrp          'p/1/g/'
 complete chown          'p/1/u/'
 complete dd             'c/if=/f/' 'c/of=/f/' \
                         'c/conv=*,/(ascii block ebcdic lcase pareven noerror \
@@ -52,6 +55,8 @@ complete dd             'c/if=/f/' 'c/of=/f/' \
                                   notrunc osync sparse swab sync unblock)/,' \
                         'p/*/(bs cbs count files fillcahr ibs if iseek obs of \
                                   oseek seek skip conv)/='
+complete env            'c/*=/f/' 'p/1/e/=/' 'p/2/c/'
+complete exec           'p/1/c/'
 complete fg             'c/%/j/'
 
 complete find           'n/-fstype/"(nfs 4.2)"/' 'n/-name/f/' \
@@ -84,6 +89,7 @@ complete grep           'c/-*A/x:<#_lines_after>/' \
                         'n/-*e/x:<limited_regular_expression>/' \
                         'n/-*f/f/' \
                         'n/*/f/'
+complete gunzip         'p/*/f:*.{gz2,tgz}/'
 
 complete hg 'p/1/(add addremove annotate archive backout bisect bookmarks \
         branch branches bundle cat clone commit copy diff export forget graft \
@@ -113,7 +119,6 @@ complete man            'C/*/c/'
 complete make           'n/*/`make -V .ALLTARGETS`/'
 
 complete netstat        'n@-I@`ifconfig -l`@'
-
 
 alias __pkgs 'pkg info -q'
 set pkgcmds=(help add annotate audit autoremove backup check clean convert \
@@ -162,6 +167,10 @@ complete sysctl 'n/*/`sysctl -Na`/'
 
 complete tmux   'n/*/(attach detach has kill-server kill-session lsc lscm ls \                        lockc locks new refresh rename showmsgs source start \
                       suspendc switchc)/'
+complete top    'n/-o/(cpu size res time pri threads total read write fault vcsw ivcsw jid)/'
+complete unzip  'p/*/f:*.zip/'
+
+complete unxz   'p/*/f:*.xz'
 
 complete which  'C/*/c/'
 
