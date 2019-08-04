@@ -11,7 +11,7 @@ BASE="$( cd "$( dirname "$0" )" && pwd )"
 
 
 # List of files to ignore
-IGNORE_FILES="${BASE}/readme.md ${BASE}/.hgignore "
+IGNORE_FILES="${BASE}/readme.md ${BASE}/.hgignore ${BASE}/.git"
 if [ -d Merging ]; then
   for FILE in Merging/*
   do
