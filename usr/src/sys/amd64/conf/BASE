@@ -16,7 +16,7 @@
 # If you are in doubt as to the purpose or necessity of a line, check first
 # in NOTES.
 #
-# $FreeBSD: stable/12/sys/amd64/conf/GENERIC 344149 2019-02-15 09:49:09Z kib $
+# $FreeBSD: stable/12/sys/amd64/conf/GENERIC 354060 2019-10-25 01:10:08Z kevans $
 
 include 	GENERIC
 #cpu		HAMMER # Included in Generic
@@ -325,7 +325,7 @@ nodevice		padlock_rng	# VIA Padlock RNG
 nodevice		rdrand_rng	# Intel Bull Mountain RNG
 #device		ether		# Ethernet support
 nodevice		vlan		# 802.1Q VLAN support
-nodevice		tun		# Packet tunnel.
+nodevice		tuntap			# Packet tunnel.
 nodevice		md		# Memory "disks"
 nodevice		gif		# IPv6 and IPv4 tunneling
 #device		firmware	# firmware assist module
