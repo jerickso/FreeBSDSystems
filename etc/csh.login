@@ -21,7 +21,7 @@ if ( `/usr/bin/tty` =~ "/dev/pts/*" ) then
   if ( $?prompt ) then    # If interactive shell
     if ( $?loginsh ) then # If login shell
       if ( -x $TMUX_EXEC ) then   # If tmux exists
-        if ( $TERM !~ "screen*") then   # If not arleady in a TMUX session
+        if ( $TERM !~ "screen*") then   # If not already in a TMUX session
           if ( ! $?TMUX ) then
             set WHOAMI=`/usr/bin/whoami`
             if ! { $TMUX_EXEC has-session -t $WHOAMI >& /dev/null } then
@@ -31,10 +31,10 @@ if ( `/usr/bin/tty` =~ "/dev/pts/*" ) then
               exec $TMUX_EXEC new -s $WHOAMI
             else
               # Resize terminal window based upon existing window
-              set OTHERDIM=`tmux ls | cut -f 2 -d'[' | cut -f 1 -d']'`
-              set OTHERWIDTH=`echo $OTHERDIM | cut -f 2 -d'x'`
-              set OTHERHEIGHT=`echo $OTHERDIM | cut -f 1 -d'x'`
-              printf '[8;%s;%st' `echo $OTHERWIDTH+1 | bc` `echo $OTHERHEIGHT`
+              set OTHERDIM=`tmux list-panes | cut -f 2 -d'[' | cut -f 1 -d']'`
+              set OTHERHEIGHT=`echo $OTHERDIM | cut -f 2 -d'x'`
+              set OTHERWIDTH=`echo $OTHERDIM | cut -f 1 -d'x'`
+              printf '[8;%s;%st' `echo $OTHERHEIGHT+1 | bc` `echo $OTHERWIDTH`
               unset OTHERDIM
               unset OTHERWIDTH
               unset OTHERHEIGHT
