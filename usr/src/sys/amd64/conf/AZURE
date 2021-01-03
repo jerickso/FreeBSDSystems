@@ -3,6 +3,7 @@ ident		AZURE
 
 device          hyperv		# HyperV drivers 
 device          uart
+options CONSPEED=115200
 
 device		fdc
 
