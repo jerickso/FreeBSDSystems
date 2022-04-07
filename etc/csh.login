@@ -1,4 +1,4 @@
-# $FreeBSD: stable/12/bin/csh/csh.login 363525 2020-07-25 11:57:39Z pstef $
+# $FreeBSD$
 #
 # System-wide .login file for csh(1).
 #
@@ -13,29 +13,33 @@
 
 set TMUX_EXEC = /usr/local/bin/tmux
 
-# Run tmux if not on console
+# Run tmux if not on console, tmux exists, and runs without errors
 if ( `/usr/bin/tty` =~ "/dev/pts/*" ) then
-  if ( $?prompt ) then                  # If interactive shell
-    if ( $?loginsh ) then               # If login shell
-      if ( -x $TMUX_EXEC ) then         # If tmux binary exists
-        if ( $TERM !~ "screen*") then   # If not already in a TMUX session
-          if ( ! $?TMUX ) then
-            set WHOAMI=`/usr/bin/whoami`
-            if ! { $TMUX_EXEC has-session -t $WHOAMI >& /dev/null } then
-              # Resize terminal window width to be 82 columns
-              printf '[8;;82t'
-              # In tmux, the string is 'Ptmux;[8;;82t\'
-              exec $TMUX_EXEC new -s $WHOAMI
-            else
-              # Resize terminal window based upon existing tmux window
-              set OTHERDIM=`tmux list-panes | cut -f 2 -d'[' | cut -f 1 -d']'`
-              set OTHERHEIGHT=`echo $OTHERDIM | cut -f 2 -d'x'`
-              set OTHERWIDTH=`echo $OTHERDIM | cut -f 1 -d'x'`
-              printf '[8;%s;%st' `echo $OTHERHEIGHT+1 | bc` `echo $OTHERWIDTH`
-              unset OTHERHEIGHT
-              unset OTHERWIDTH
-              unset OTHERDIM
-              exec $TMUX_EXEC attach -t $WHOAMI
+  if ( $?prompt ) then    # If interactive shell
+    if ( $?loginsh ) then # If login shell
+      if ( -x $TMUX_EXEC ) then   # If tmux exists
+        # Make sure one can execute tmux (ie no missing libraries)
+        $TMUX_EXEC -V >& /dev/null
+        if ($status == 0) then
+          if ( $TERM !~ "screen*") then   # If not arleady in a TMUX session
+            if ( ! $?TMUX ) then
+              set WHOAMI=`/usr/bin/whoami`
+              if ! { $TMUX_EXEC has-session -t $WHOAMI >& /dev/null } then
+                # Resize terminal window width to be 82 columns
+                printf '[8;;82t'
+                # In tmux, the string is 'Ptmux;[8;;82t\'
+                exec $TMUX_EXEC new -s $WHOAMI
+              else
+                # Resize terminal window based upon existing window
+                set OTHERDIM=`tmux ls | cut -f 2 -d'[' | cut -f 1 -d']'`
+                set OTHERWIDTH=`echo $OTHERDIM | cut -f 2 -d'x'`
+                set OTHERHEIGHT=`echo $OTHERDIM | cut -f 1 -d'x'`
+                printf '[8;%s;%st' `echo $OTHERWIDTH+1 | bc` `echo $OTHERHEIGHT`
+                unset OTHERDIM
+                unset OTHERWIDTH
+                unset OTHERHEIGHT
+                exec $TMUX_EXEC attach -t $WHOAMI
+              endif
             endif
           endif
         endif
