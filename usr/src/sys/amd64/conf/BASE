@@ -22,19 +22,18 @@ include 	GENERIC
 #cpu		HAMMER # Included in Generic
 ident		BASE
 
-options 	KDB_UNATTENDED
-
+options     KDB_UNATTENDED
 
 # To statically compile in device wiring instead of /boot/device.hints
-#hints		"GENERIC.hints"		# Default places to look for devices.
+#hints              "GENERIC.hints"         # Default places to look for devices.
 
 # Use the following to compile in values accessible to the kernel
 # through getenv() (or kenv(1) in userland). The format of the file
 # is 'variable=value', see kenv(1)
 #
-# env		"GENERIC.env"
+# env               "GENERIC.env"
 
-nomakeoptions	DEBUG   		# Build kernel with gdb(1) debug symbols
+nomakeoptions	DEBUG
 nomakeoptions	WITH_CTF
 
 #options 	SCHED_ULE		# ULE scheduler
@@ -129,12 +128,19 @@ nooptions 	NETGDB			# netgdb(4) client support
 
 # Bus support.
 #device		acpi
+nodevice		smbios
 nooptions 	IOMMU
 #device		pci
 nooptions 	PCI_HP			# PCI-Express native HotPlug
 nooptions		PCI_IOV			# PCI SR-IOV support
 
-nooptions 	COMPAT_LINUXKPI  # Mellonox driver requires this option
+nooptions 	COMPAT_LINUXKPI
+
+# Enable support for the kernel PLL to use an external PPS signal,
+# under supervision of [x]ntpd(8)
+# More info in ntpd documentation: http://www.eecis.udel.edu/~ntp
+
+nooptions 	PPS_SYNC
 
 # Floppy drives
 nodevice		fdc
@@ -199,8 +205,7 @@ nodevice		nvme			# base NVMe driver
 nodevice		nvd			# expose NVMe namespaces as disks, depends on nvme
 
 # Intel Volume Management Device (VMD) support
-#device		vmd			# base VMD device
-#device		vmd_bus			# bus for VMD children
+nodevice		vmd
 
 # atkbdc0 controls both the keyboard and the PS/2 mouse
 #device		atkbdc		# AT keyboard controller
@@ -214,11 +219,11 @@ nooptions 	VESA		# Add support for VESA BIOS Extensions (VBE)
 
 #device		splash		# Splash screen and screen saver support
 
-# syscons is the default console driver, resembling an SCO console
+# syscons is the legacy console driver, resembling an SCO console
 #device		sc
 nooptions 	SC_PIXEL_MODE	# add support for the raster text mode
 
-# vt is the new video console driver
+# vt is the default video console driver
 #device		vt
 #device		vt_vga
 nodevice		vt_efifb
@@ -247,6 +252,7 @@ nodevice		puc		# Multi I/O cards and multi-channel UARTs
 # PCI/PCI-X/PCIe Ethernet NICs that use iflib infrastructure
 #nodevice		iflib
 nodevice		em		# Intel PRO/1000 Gigabit Ethernet Family
+nodevice		igc			# Intel I225 2.5G Ethernet
 nodevice		ix			# Intel PRO/10GbE PCIE PF Ethernet
 nodevice		ixv			# Intel PRO/10GbE PCIE VF Ethernet
 nodevice		ixl			# Intel 700 Series Physical Function
@@ -324,7 +330,7 @@ nodevice		wpi		# Intel 3945ABG wireless NICs.
 
 # Pseudo devices.
 device		crypto			# core crypto support
-device		aesni			# AES-NI OpenCrypto module
+nodevice		aesni			# AES-NI OpenCrypto module
 #device		loop		# Network loopback
 nodevice		padlock_rng	# VIA Padlock RNG
 nodevice		rdrand_rng	# Intel Bull Mountain RNG
@@ -375,6 +381,9 @@ nodevice		virtio_blk	# VirtIO Block device
 nodevice		virtio_scsi	# VirtIO SCSI device
 nodevice		virtio_balloon	# VirtIO Memory Balloon device
 
+# Linux KVM paravirtualization support
+device		kvm_clock		# KVM paravirtual clock driver
+
 # HyperV drivers and enhancement support
 nodevice		hyperv			# HyperV drivers 
 
@@ -392,6 +401,6 @@ nodevice		evdev			# input event device support
 nodevice		uinput			# install /dev/uinput cdev
 
 # HID support
-nooptions 	HID_DEBUG		# enable debug msgs
+#options 	HID_DEBUG		# enable debug msgs
 device		hid			# Generic HID support
 options 	IICHID_SAMPLING		# Workaround missing GPIO INTR support
